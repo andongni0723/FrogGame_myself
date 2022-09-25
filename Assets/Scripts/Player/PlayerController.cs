@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 
     float jumpDistance = 2f;
     float finalJumpDistance;
-    public float moveSpeed = 0.134f;
+    float moveSpeed = 0.134f;
     bool bigJumpPerformed = false;
 
     private void Awake()
@@ -31,13 +31,13 @@ public class PlayerController : MonoBehaviour
         if (context.phase == InputActionPhase.Performed)
         {
             finalJumpDistance = jumpDistance;
+            
 
             // Test
-            Debug.Log("jump" + GetAngle(transform.position, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue())).ToString());
+            //Debug.Log("jump");
 
             // Move
-            Movment();
-            //targetPos = new Vector2(transform.position.x, transform.position.y + finalJumpDistance);
+            Movement();
         }
     }
 
@@ -47,65 +47,73 @@ public class PlayerController : MonoBehaviour
         if (context.phase == InputActionPhase.Performed)
         {
             finalJumpDistance = jumpDistance * 2;
-            //bigJumpPerformed = true;
+            bigJumpPerformed = true;
         }
 
         // When mouse up
         if (context.phase == InputActionPhase.Canceled && bigJumpPerformed)
         {
             // Test
-            Debug.Log("big jump DDIS!");
-            Debug.Log(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
-
+            Debug.Log("BIG jump!");
 
             // Move
-            targetPos = new Vector2(transform.position.x, transform.position.y + finalJumpDistance);
+            Movement();
             bigJumpPerformed = false;
         }
     }
 
-    private void Movment()
+    /// <summary>
+    /// Player movement
+    /// </summary>
+    private void Movement()
     {
-        float angle = GetAngle(transform.position, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
+        float direction = GetDirection(transform.position, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
 
-        float upLeftLine = -45;
-        float upRightLine = 45;
-        float leftRightLint = 179;
+        float x = 0;
+        float y = 0;
 
-        if (upLeftLine <= angle && angle <= upRightLine) // go forward
+        //test
+        //Debug.Log(direction);
+        
+        switch(direction)
         {
-            Debug.Log("UP UP UP");
+            case -1: //left
+                x = -finalJumpDistance;
+                y = 0;
+                break;
+            case 0: // forward
+                x = 0;
+                y = finalJumpDistance;
+                break;
+            case 1: // right
+                x = finalJumpDistance;
+                y = 0;
+                break;
         }
-        else if (-leftRightLint <= angle && angle <= upLeftLine) // go left
-        {
-            Debug.Log("LEFT LEFT");
-        }
-        else // go right
-        {
-            Debug.Log("RIGHT RIGHT");
-        }
+
+        targetPos = new Vector2(transform.position.x + x, transform.position.y + y);
     }
 
-    private float GetAngle(Vector2 a, Vector2 b)
+
+    /// <summary>
+    /// Get a direction for b
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns>0: forword, -1: left, 1: right</returns>
+    private float GetDirection(Vector2 a, Vector2 b)
     {
-        // position can't equal
-        // if (a.x == b.x && a.y >= b.y) return 0;
+        Vector2 PosAminB = new Vector2( b.x - 0, b.y - a.y);
 
-        // b -= a;
-        // Vector2 c = new Vector2(a.x, a.y + 1);
+        float direction;
 
-        // float d1 = (c.x * b.x) + (c.y * b.y);
-        // float d2 = c.magnitude * b.magnitude;
-        // float angle = Mathf.Acos(d1 / d2) * (180 / Mathf.PI);
+        if (PosAminB.y >= 0) // go forward
+            direction = 0;
+        else if (PosAminB.x >= 0) // go right
+            direction = 1;
+        else
+            direction = -1;
 
-        // if (b.x < 0) angle *= -1;
-
-        // return angle;
-
-        Vector3 targetDir = b - a; // 目标坐标与当前坐标差的向量
-
-        float angle = Vector3.Angle(transform.forward, targetDir); // 返回当前坐标与目标坐标的角度
-
-        return angle;
+        return direction;
     }
 }
