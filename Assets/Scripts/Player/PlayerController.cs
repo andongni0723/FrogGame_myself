@@ -5,30 +5,54 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    const float Pos_Max_Difference = 0.01f;
+
     Vector2 mousePos;
+
+    [SerializeField]
     Vector2 targetPos;
     Rigidbody2D rb;
+    Animator anim;
+    SpriteRenderer spr;
 
     float jumpDistance = 2f;
     float finalJumpDistance;
     float moveSpeed = 0.134f;
     bool bigJumpPerformed = false;
 
+    [SerializeField]
+    Vector3 lastPos = new Vector2();
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        spr = GetComponent<SpriteRenderer>();
+
         targetPos = transform.position;
+        anim.SetBool("isForward", true);
     }
 
     private void FixedUpdate()
     {
         rb.position = Vector2.Lerp(transform.position, targetPos, moveSpeed);
+        
+        // Player is moving or not
+        if(!(Mathf.Abs(transform.position.x - lastPos.x) <= Pos_Max_Difference &&
+             Mathf.Abs(transform.position.y -lastPos.y) <= Pos_Max_Difference)) // Player is moving
+            
+            anim.SetBool("isJump", true);
+        else 
+            anim.SetBool("isJump", false);
+        
+        // Update last position
+        lastPos = transform.position;
     }
 
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Performed && !anim.GetBool("isJump"))
         {
             finalJumpDistance = jumpDistance;
             
@@ -44,14 +68,14 @@ public class PlayerController : MonoBehaviour
     public void BigJump(InputAction.CallbackContext context)
     {
 
-        if (context.phase == InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Performed && !anim.GetBool("isJump"))
         {
             finalJumpDistance = jumpDistance * 2;
             bigJumpPerformed = true;
         }
 
         // When mouse up
-        if (context.phase == InputActionPhase.Canceled && bigJumpPerformed)
+        if (context.phase == InputActionPhase.Canceled && bigJumpPerformed && !anim.GetBool("isJump"))
         {
             // Test
             Debug.Log("BIG jump!");
@@ -78,14 +102,20 @@ public class PlayerController : MonoBehaviour
         switch(direction)
         {
             case -1: //left
+                spr.flipX = false;
+                anim.SetBool("isForward", false);
                 x = -finalJumpDistance;
                 y = 0;
                 break;
             case 0: // forward
+                spr.flipX = false;
+                anim.SetBool("isForward", true);
                 x = 0;
                 y = finalJumpDistance;
                 break;
             case 1: // right
+                spr.flipX = true;
+                anim.SetBool("isForward", false);
                 x = finalJumpDistance;
                 y = 0;
                 break;
