@@ -15,14 +15,22 @@ public class MapManager : MonoBehaviour
     GameObject firstEndPoint;
     GameObject lastEndPoint;
     GameObject mapAreaStartPoint;
+
+
+    // Test mode 
+    [Header("Test Mode")]
+    public bool isOn = true;
     private void Awake()
     {
+        if(!isOn) return; //FIXME: Test mode
         mapParent = GameObject.FindWithTag("mapParent");
         GetFirstMapAreaEndPoint();
         SetLastMapAreaEndPoint();
     }
     private void Update()
     {
+        if(!isOn) return; //FIXME: Test mode
+
         CheckCameraInSetMapArea();
         CheckMapAreaOutScene();
     }

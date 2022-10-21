@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour
     float finalJumpDistance;
     float moveSpeed = 0.134f;
     bool bigJumpPerformed = false;
+    bool isJump;
+
+    [SerializeField]
+    bool onWood = false;
 
     [SerializeField]
     Vector3 lastPos = new Vector2();
@@ -36,15 +40,20 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         rb.position = Vector2.Lerp(transform.position, targetPos, moveSpeed);
-        
+
         // Player is moving or not
-        if(!(Mathf.Abs(transform.position.x - lastPos.x) <= Pos_Max_Difference &&
-             Mathf.Abs(transform.position.y -lastPos.y) <= Pos_Max_Difference)) // Player is moving
-            
+        if (!(Mathf.Abs(transform.position.x - lastPos.x) <= Pos_Max_Difference &&
+             Mathf.Abs(transform.position.y - lastPos.y) <= Pos_Max_Difference)) // Player is moving
+        {
             anim.SetBool("isJump", true);
-        else 
+            isJump = true;
+        }
+        else
+        {
             anim.SetBool("isJump", false);
-        
+            isJump = false;
+        }
+
         // Update last position
         lastPos = transform.position;
     }
@@ -52,10 +61,10 @@ public class PlayerController : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed && !anim.GetBool("isJump"))
+        if (context.phase == InputActionPhase.Performed && !isJump)
         {
             finalJumpDistance = jumpDistance;
-            
+
 
             // Test
             //Debug.Log("jump");
@@ -68,14 +77,14 @@ public class PlayerController : MonoBehaviour
     public void BigJump(InputAction.CallbackContext context)
     {
 
-        if (context.phase == InputActionPhase.Performed && !anim.GetBool("isJump"))
+        if (context.phase == InputActionPhase.Performed && !isJump)
         {
             finalJumpDistance = jumpDistance * 2;
             bigJumpPerformed = true;
         }
 
         // When mouse up
-        if (context.phase == InputActionPhase.Canceled && bigJumpPerformed && !anim.GetBool("isJump"))
+        if (context.phase == InputActionPhase.Canceled && bigJumpPerformed && !isJump)
         {
             // Test
             Debug.Log("BIG jump!");
@@ -98,8 +107,8 @@ public class PlayerController : MonoBehaviour
 
         //test
         //Debug.Log(direction);
-        
-        switch(direction)
+
+        switch (direction)
         {
             case -1: //left
                 spr.flipX = false;
@@ -133,7 +142,7 @@ public class PlayerController : MonoBehaviour
     /// <returns>0: forword, -1: left, 1: right</returns>
     private float GetDirection(Vector2 a, Vector2 b)
     {
-        Vector2 PosAminB = new Vector2( b.x - 0, b.y - a.y);
+        Vector2 PosAminB = new Vector2(b.x - 0, b.y - a.y);
 
         float direction;
 
@@ -145,5 +154,39 @@ public class PlayerController : MonoBehaviour
             direction = -1;
 
         return direction;
+    }
+
+
+    // Player Died
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        switch (other.tag)
+        {
+            case "enemy":
+                EventManager.CallPlayerDied();
+                break;
+            case "wood":
+                onWood = true;
+                break;
+
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.tag == "water" && onWood && !isJump)
+        {
+            EventManager.CallPlayerDied();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        switch (other.tag)
+        {
+            case "wood":
+                onWood = false;
+                break;
+        }
     }
 }
