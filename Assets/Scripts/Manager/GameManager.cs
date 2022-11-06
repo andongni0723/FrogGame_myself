@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     public float score;
+    public bool playedisDead;
 
     private void OnEnable()
     {
@@ -20,5 +21,6 @@ public class GameManager : MonoBehaviour
     private void OnPlayerDied()
     {
         Debug.Log("PLAYER DIED!!!!!");
+        playedisDead = true;
     }
 }

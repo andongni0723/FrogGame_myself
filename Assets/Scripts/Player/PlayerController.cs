@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     float finalJumpDistance;
     float moveSpeed = 0.134f;
     bool bigJumpPerformed = false;
+
+    [SerializeField]
     bool isJump;
 
     [SerializeField]
@@ -45,13 +47,15 @@ public class PlayerController : MonoBehaviour
         if (!(Mathf.Abs(transform.position.x - lastPos.x) <= Pos_Max_Difference &&
              Mathf.Abs(transform.position.y - lastPos.y) <= Pos_Max_Difference)) // Player is moving
         {
-            anim.SetBool("isJump", true);
             isJump = true;
+            anim.SetBool("isJump", true);
+            spr.sortingOrder = 1;
         }
         else
         {
-            anim.SetBool("isJump", false);
             isJump = false;
+            anim.SetBool("isJump", false);
+            spr.sortingOrder = 0;
         }
 
         // Update last position
@@ -160,6 +164,8 @@ public class PlayerController : MonoBehaviour
     // Player Died
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if(isJump || GameManager.Instance.playedisDead) return;
+                 
         switch (other.tag)
         {
             case "enemy":
@@ -168,13 +174,20 @@ public class PlayerController : MonoBehaviour
             case "wood":
                 onWood = true;
                 break;
-
         }
+        
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        if(isJump || GameManager.Instance.playedisDead) return;
+
         if (other.tag == "water" && onWood && !isJump)
+        {
+            EventManager.CallPlayerDied();
+        }
+
+        if (other.tag == "enemy" && !isJump)
         {
             EventManager.CallPlayerDied();
         }
@@ -182,6 +195,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
+        if(isJump || GameManager.Instance.playedisDead) return;
+
         switch (other.tag)
         {
             case "wood":

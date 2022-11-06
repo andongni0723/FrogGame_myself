@@ -121,6 +121,6 @@ public class MapManager : MonoBehaviour
     /// </summary>
     public void NewMapArea()
     {
-        Instantiate(MapAreaPrefabList[Random.Range(0, MapAreaPrefabList.Count - 1)], lastEndPoint.transform.position, Quaternion.identity, mapParent.transform);
+        Instantiate(MapAreaPrefabList[Random.Range(0, MapAreaPrefabList.Count)], lastEndPoint.transform.position, Quaternion.identity, mapParent.transform);
     }
 }
