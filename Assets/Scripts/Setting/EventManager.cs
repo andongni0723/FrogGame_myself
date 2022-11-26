@@ -10,4 +10,10 @@ public static class EventManager
     {
         playerDied?.Invoke();
     }
+
+    public static event Action obstacleDataLoad;
+    public static void CallobstacleDataLoad()
+    {
+        obstacleDataLoad?.Invoke();
+    }
 }

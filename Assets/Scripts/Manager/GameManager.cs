@@ -7,6 +7,10 @@ public class GameManager : Singleton<GameManager>
 {
     public float score;
     public bool playedisDead;
+    
+    //test
+    public GameObject gameoverText;
+ 
 
     private void OnEnable()
     {
@@ -22,5 +26,6 @@ public class GameManager : Singleton<GameManager>
     {
         Debug.Log("PLAYER DIED!!!!!");
         playedisDead = true;
+        gameoverText.SetActive(true); //TODO:Test
     }
 }

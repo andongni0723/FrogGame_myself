@@ -15,13 +15,15 @@ public class PlayerController : MonoBehaviour
     Animator anim;
     SpriteRenderer spr;
 
+    RaycastHit2D[] result = new RaycastHit2D[2];
+
     float jumpDistance = 2f;
     float finalJumpDistance;
     float moveSpeed = 0.134f;
     bool bigJumpPerformed = false;
 
     [SerializeField]
-    bool isJump;
+    bool isJump = false;
 
     [SerializeField]
     bool onWood = false;
@@ -41,19 +43,19 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //if(!onWood)
         rb.position = Vector2.Lerp(transform.position, targetPos, moveSpeed);
 
         // Player is moving or not
         if (!(Mathf.Abs(transform.position.x - lastPos.x) <= Pos_Max_Difference &&
-             Mathf.Abs(transform.position.y - lastPos.y) <= Pos_Max_Difference)) // Player is moving
+             Mathf.Abs(transform.position.y - lastPos.y) <= Pos_Max_Difference)) // Player is moving, and not on wood
         {
-            isJump = true;
-            anim.SetBool("isJump", true);
+            transform.parent = null;
+            if(!onWood) anim.SetBool("isJump", true);
             spr.sortingOrder = 1;
         }
         else
-        {
-            isJump = false;
+        {      
             anim.SetBool("isJump", false);
             spr.sortingOrder = 0;
         }
@@ -71,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
 
             // Test
-            //Debug.Log("jump");
+            Debug.Log("jump");
 
             // Move
             Movement();
@@ -105,7 +107,7 @@ public class PlayerController : MonoBehaviour
     private void Movement()
     {
         float direction = GetDirection(transform.position, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
-
+        
         float x = 0;
         float y = 0;
 
@@ -171,9 +173,6 @@ public class PlayerController : MonoBehaviour
             case "enemy":
                 EventManager.CallPlayerDied();
                 break;
-            case "wood":
-                onWood = true;
-                break;
         }
         
     }
@@ -182,9 +181,26 @@ public class PlayerController : MonoBehaviour
     {
         if(isJump || GameManager.Instance.playedisDead) return;
 
-        if (other.tag == "water" && onWood && !isJump)
+        if (other.tag == "water")
         {
-            EventManager.CallPlayerDied();
+            onWood = false;
+
+            Physics2D.RaycastNonAlloc(transform.position, Vector3.zero, result);
+
+            foreach (var item in result)
+            {
+                if(item.collider == null) continue;
+                print(item.collider.tag);
+
+                if(item.collider.tag == "wood")
+                {
+                    onWood = true;
+                    transform.parent = item.collider.transform;
+                }
+            }
+            //FIXME: Player on wood can't jump
+            if(!onWood)
+                EventManager.CallPlayerDied();
         }
 
         if (other.tag == "enemy" && !isJump)
@@ -197,11 +213,28 @@ public class PlayerController : MonoBehaviour
     {
         if(isJump || GameManager.Instance.playedisDead) return;
 
-        switch (other.tag)
-        {
-            case "wood":
-                onWood = false;
-                break;
-        }
+        // switch (other.tag)
+        // {
+        //     case "wood":
+        //         onWood = false;
+        //         transform.parent = transform;
+        //         break;
+        // }
     }
+
+    #region Animation Event
+    public void StartAnimationEvent()
+    {
+        isJump = true;
+        print("start");
+        
+        // = null;
+    }
+
+    public void EndAnimationEvent()
+    {
+        isJump = false;
+        print("end");
+    }
+    #endregion
 }

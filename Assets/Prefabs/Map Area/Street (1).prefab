@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 1569302754020555056}
   - component: {fileID: 942811516}
   - component: {fileID: 942811517}
+  - component: {fileID: 9154246007716275507}
   m_Layer: 0
-  m_Name: Rigjt car point
+  m_Name: Right car point
   m_TagString: carRightPoint
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -60,7 +61,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3405083224646840616}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 22cd936cca3dece41afbc800fed1f573, type: 3}
   m_Name: 
@@ -71,6 +72,26 @@ MonoBehaviour:
   - {fileID: 1502473639400369249, guid: 57864607397bbec4fb15d949775fe5f7, type: 3}
   newCarSpeedMin: 2
   newCarSpeedMax: 4
+--- !u!114 &9154246007716275507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3405083224646840616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15870526badbc3d41b916820fae47809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointDirection: 1
+  InstObjectDataSO:
+  - {fileID: 11400000, guid: ba32858962661d44e92613d30e259ccd, type: 2}
+  - {fileID: 11400000, guid: ae9731dcc9c33274480c383e9538f35f, type: 2}
+  - {fileID: 11400000, guid: 57097e721c1e1484a9ed370c1e47cfb3, type: 2}
+  InstBasicGameObject: {fileID: 8077399406473296731, guid: ba583c18040a9af4680e18607845a11c, type: 3}
+  InstSpeedMin: 2
+  InstSpeedMax: 4
 --- !u!1 &4282852471701246915
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +295,7 @@ Transform:
   - {fileID: 2187935195400851522}
   - {fileID: 1569302754020555056}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4282852473092950378
 GameObject:
@@ -370,6 +391,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2187935195400851522}
   - component: {fileID: 564626164}
+  - component: {fileID: 7544561927329225300}
   m_Layer: 0
   m_Name: Left car point
   m_TagString: carLeftPoint
@@ -399,7 +421,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5613302659634241393}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 22cd936cca3dece41afbc800fed1f573, type: 3}
   m_Name: 
@@ -410,6 +432,26 @@ MonoBehaviour:
   - {fileID: 1502473639400369249, guid: 57864607397bbec4fb15d949775fe5f7, type: 3}
   newCarSpeedMin: 2
   newCarSpeedMax: 4
+--- !u!114 &7544561927329225300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5613302659634241393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15870526badbc3d41b916820fae47809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointDirection: 0
+  InstObjectDataSO:
+  - {fileID: 11400000, guid: ba32858962661d44e92613d30e259ccd, type: 2}
+  - {fileID: 11400000, guid: ae9731dcc9c33274480c383e9538f35f, type: 2}
+  - {fileID: 11400000, guid: 57097e721c1e1484a9ed370c1e47cfb3, type: 2}
+  InstBasicGameObject: {fileID: 8077399406473296731, guid: ba583c18040a9af4680e18607845a11c, type: 3}
+  InstSpeedMin: 2
+  InstSpeedMax: 4
 --- !u!1001 &1403457733379751331
 PrefabInstance:
   m_ObjectHideFlags: 0
