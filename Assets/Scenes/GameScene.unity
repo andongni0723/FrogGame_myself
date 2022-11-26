@@ -634,37 +634,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &946221988 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4282852471701246915, guid: 724392f8209921a47b36684cdabafbb4, type: 3}
-  m_PrefabInstance: {fileID: 6742429439814641037}
-  m_PrefabAsset: {fileID: 0}
---- !u!61 &946221991
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 946221988}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 16.45, y: 4.7}
-    newSize: {x: 15.3, y: 5.99}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 16.45, y: 4.7}
-  m_EdgeRadius: 0
 --- !u!1 &981039128
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,6 +680,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapAreaPrefabList:
   - {fileID: 4282852472971783591, guid: df4833cc5a9fd4e4ea59a53d4905f0b5, type: 3}
+  - {fileID: 6803164328992973525, guid: c518400658d815f468219bc9b0387e75, type: 3}
+  - {fileID: 4282852472971783591, guid: 724392f8209921a47b36684cdabafbb4, type: 3}
   cameraPoint: {fileID: 754412}
   cameraDestroyPoint: {fileID: 1020063318}
   isOn: 0
@@ -1196,18 +1167,6 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 158782041908086815, guid: 724392f8209921a47b36684cdabafbb4, type: 3}
-      propertyPath: InstSpeedMin
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 158782041908086815, guid: 724392f8209921a47b36684cdabafbb4, type: 3}
-      propertyPath: pointDirection
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4282852471701246915, guid: 724392f8209921a47b36684cdabafbb4, type: 3}
-      propertyPath: m_TagString
-      value: water
-      objectReference: {fileID: 0}
     - target: {fileID: 4282852472971783588, guid: 724392f8209921a47b36684cdabafbb4, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1256,9 +1215,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: River Area
       objectReference: {fileID: 0}
-    - target: {fileID: 8547034280743046295, guid: 724392f8209921a47b36684cdabafbb4, type: 3}
-      propertyPath: InstSpeedMin
-      value: 2
+    - target: {fileID: 4282852472971783591, guid: 724392f8209921a47b36684cdabafbb4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
