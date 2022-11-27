@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    const float Pos_Max_Difference = 0.01f;
+    const float Pos_Max_Difference = 0.1f;
 
     Vector2 mousePos;
 
@@ -20,16 +20,16 @@ public class PlayerController : MonoBehaviour
     float jumpDistance = 2f;
     float finalJumpDistance;
     float moveSpeed = 0.134f;
+    float maxDifferenceWithStatue; // not jump is 0; is jump is Pos_Max_Difference(const)
     bool bigJumpPerformed = false;
+    [SerializeField] bool isMovingX = false;
+    [SerializeField] bool isMovingY = false;
 
-    [SerializeField]
-    bool isJump = false;
+    [SerializeField] bool isJump = false;
 
-    [SerializeField]
-    bool onWood = false;
+    [SerializeField] bool onWood = false;
 
-    [SerializeField]
-    Vector3 lastPos = new Vector2();
+    [SerializeField] Vector3 lastPos = new Vector3();
 
     private void Awake()
     {
@@ -46,16 +46,25 @@ public class PlayerController : MonoBehaviour
         //if(!onWood)
         rb.position = Vector2.Lerp(transform.position, targetPos, moveSpeed);
 
+        CheckOnWood();
+
+        //Check Moving
+        isMovingX = Mathf.Abs(transform.position.x - targetPos.x) >= Pos_Max_Difference;
+        isMovingY = Mathf.Abs(transform.position.y - targetPos.y) >= Pos_Max_Difference;
+
         // Player is moving or not
-        if (!(Mathf.Abs(transform.position.x - lastPos.x) <= Pos_Max_Difference &&
-             Mathf.Abs(transform.position.y - lastPos.y) <= Pos_Max_Difference)) // Player is moving, and not on wood
+        if (isMovingX || isMovingY) // Player is moving
         {
             transform.parent = null;
-            if(!onWood) anim.SetBool("isJump", true);
+
+            if(!(onWood && isMovingX && !isMovingY)) // if player on the wood, the posX will change with wood's posX. So Disable the jump animation. 
+                anim.SetBool("isJump", true);
+
             spr.sortingOrder = 1;
         }
-        else
-        {      
+        else if(!isMovingX && !isMovingY && isJump) // Player not moving
+        {
+            EndJumpEvent();      
             anim.SetBool("isJump", false);
             spr.sortingOrder = 0;
         }
@@ -71,7 +80,6 @@ public class PlayerController : MonoBehaviour
         {
             finalJumpDistance = jumpDistance;
 
-
             // Test
             Debug.Log("jump");
 
@@ -82,7 +90,6 @@ public class PlayerController : MonoBehaviour
 
     public void BigJump(InputAction.CallbackContext context)
     {
-
         if (context.phase == InputActionPhase.Performed && !isJump)
         {
             finalJumpDistance = jumpDistance * 2;
@@ -108,11 +115,10 @@ public class PlayerController : MonoBehaviour
     {
         float direction = GetDirection(transform.position, Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
         
+        StartJumpEvent();
+
         float x = 0;
         float y = 0;
-
-        //test
-        //Debug.Log(direction);
 
         switch (direction)
         {
@@ -162,6 +168,23 @@ public class PlayerController : MonoBehaviour
         return direction;
     }
 
+    //Check on wood
+    void CheckOnWood()
+    {
+        if(!onWood) return;
+
+        Physics2D.RaycastNonAlloc(transform.position, Vector3.zero, result);
+        
+        foreach (var item in result)
+        {
+            if(item.collider == null) continue;
+
+            if(item.collider.tag == "wood") return;
+        }
+
+        onWood = false;
+    }
+
 
     // Player Died
     private void OnTriggerEnter2D(Collider2D other)
@@ -181,11 +204,12 @@ public class PlayerController : MonoBehaviour
     {
         if(isJump || GameManager.Instance.playedisDead) return;
 
-        if (other.tag == "water")
+        if (other.tag == "water" || other.tag == "wood")
         {
             onWood = false;
 
             Physics2D.RaycastNonAlloc(transform.position, Vector3.zero, result);
+            Debug.LogWarning(result);
 
             foreach (var item in result)
             {
@@ -198,7 +222,7 @@ public class PlayerController : MonoBehaviour
                     transform.parent = item.collider.transform;
                 }
             }
-            //FIXME: Player on wood can't jump
+            
             if(!onWood)
                 EventManager.CallPlayerDied();
         }
@@ -212,26 +236,17 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other)
     {
         if(isJump || GameManager.Instance.playedisDead) return;
-
-        // switch (other.tag)
-        // {
-        //     case "wood":
-        //         onWood = false;
-        //         transform.parent = transform;
-        //         break;
-        // }
     }
 
     #region Animation Event
-    public void StartAnimationEvent()
+    public void StartJumpEvent()
     {
         isJump = true;
         print("start");
-        
-        // = null;
+        transform.parent = null;
     }
 
-    public void EndAnimationEvent()
+    public void EndJumpEvent()
     {
         isJump = false;
         print("end");

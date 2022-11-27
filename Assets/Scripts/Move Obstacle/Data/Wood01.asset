@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tagType: 1
   itemIcon: {fileID: 21300000, guid: e7bc55491fbc32648842f64c935191ef, type: 3}
-  startSpeed: 5
+  startSpeed: 3
   animatorController: {fileID: 0}
   colliderOffset: {x: 0, y: 0.07104921}
   colliderSize: {x: 4.38, y: 1.509713}

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -27,5 +28,10 @@ public class GameManager : Singleton<GameManager>
         Debug.Log("PLAYER DIED!!!!!");
         playedisDead = true;
         gameoverText.SetActive(true); //TODO:Test
+    }
+
+    public void ResetButton()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 }
