@@ -47,6 +47,17 @@
                 },
                 {
                     "name": "",
+                    "id": "4cac55cd-1544-46b0-a0ad-2e61315c633a",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "fadcd6de-5cbc-4ef4-ac94-169dcba5c43a",
                     "path": "<Mouse>/press",
                     "interactions": "",
