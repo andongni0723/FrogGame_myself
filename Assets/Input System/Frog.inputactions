@@ -36,6 +36,17 @@
             "bindings": [
                 {
                     "name": "",
+                    "id": "f7c6927d-5ac6-40ae-82de-ab9f642113ee",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "8e0ac050-7e4e-4855-bb5c-426d78ed1727",
                     "path": "<Mouse>/press",
                     "interactions": "",
@@ -47,8 +58,8 @@
                 },
                 {
                     "name": "",
-                    "id": "4cac55cd-1544-46b0-a0ad-2e61315c633a",
-                    "path": "<Pointer>/press",
+                    "id": "79e1e33d-d076-46a0-affe-08d83395ba21",
+                    "path": "<Touchscreen>/primaryTouch/tap",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -60,6 +71,17 @@
                     "name": "",
                     "id": "fadcd6de-5cbc-4ef4-ac94-169dcba5c43a",
                     "path": "<Mouse>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Big Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "54727799-ba3c-43d0-bab7-7f1e74a15340",
+                    "path": "<Touchscreen>/Press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

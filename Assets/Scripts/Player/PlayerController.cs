@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if(!onWood)
+        
         rb.position = Vector2.Lerp(transform.position, targetPos, moveSpeed);
 
         CheckOnWood();
@@ -56,8 +56,9 @@ public class PlayerController : MonoBehaviour
         if (isMovingX || isMovingY) // Player is moving
         {
             transform.parent = null;
-
-            if(!(onWood && isMovingX && !isMovingY)) // if player on the wood, the posX will change with wood's posX. So Disable the jump animation. 
+            
+            // if player on the wood, the posX will change with wood's posX. So Disable the jump animation.
+            if(!(onWood && isMovingX && !isMovingY))  
                 anim.SetBool("isJump", true);
 
             spr.sortingOrder = 1;
